@@ -1,10 +1,17 @@
 import "./App.css";
+import { Footer } from "./components/layout/footer/Footer";
+import { MainLayout } from "./components/layout/mainLayout/MainLayout";
+import Navbar from "./components/layout/navbar/Navbar";
+import Sidebar from "./components/layout/sidebar/Sdebard";
 
 function App() {
   return (
-    <>
-      <h1>hola mundo</h1>
-    </>
+    <div className="flex flex-col w-full">
+      <Navbar />
+      <Sidebar />
+      <MainLayout />
+      <Footer />
+    </div>
   );
 }
 
