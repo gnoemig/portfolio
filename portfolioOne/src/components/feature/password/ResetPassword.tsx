@@ -1,16 +1,28 @@
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 
+interface SigningProps {
+  fname: string;
+  lName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  termOfService: string
+}
+
+const validatePassword =({passwrd}: string) => {
+
+}
 const ResetPassword = () => {
-  const { register, handleSubmit, formState:{errors} } = useForm();
-  
+  const { register, handleSubmit, formState:{errors }, watch } = useForm<SigningProps>();
+  const password =  watch("password")
   console.log(errors)
-  const onsubmit = handleSubmit((data) => {
-    // console.log(data);
-  });
+  const onSubmit: SubmitHandler<SigningProps> = (data) => {
+    console.log(data);
+  };
   return (
-    <div className="flex justify-center items-center h-screen ">
+    <div className="flex justify-center items-center h-screen m-10 ">
       <form
-        onSubmit={onsubmit}
+        onSubmit={handleSubmit(onSubmit)}
         className="w-full md:w-2/5 bg-green-200 border-black p-5 rounded"
       >
         <div className="flex justify-center flex-col mb-5 p-5 gap-5">
@@ -20,12 +32,19 @@ const ResetPassword = () => {
               type="text"
               className="border-2 border-blue-300 rounded"
               id="name"
-              {...register("name", { required: true,
-                minLength: 2,
-                maxLength: 20
+              {...register("fname", { required: {
+                value: true,
+                message: "This field is required"
+              },
+                minLength: {
+                  value: 2,
+                message: "Name must be at least 2 characters"},
+                maxLength: {
+                  value: 20,
+                message: "Name must be at most 20 characters"},
                })}
             />
-            {errors.name &&  <span className="text-xs text-red-600">Name is required</span>}
+            {errors.fname &&  <span className="text-xs text-red-600">{errors.fname.message}</span>}
           </div>
           <div className="flex flex-col gap-1">
             <label htmlFor="lastName">Last name</label>
@@ -33,8 +52,13 @@ const ResetPassword = () => {
               type="text"
               id="lastName"
               className="border-2 border-blue-300 rounded"
-              {...register("lastName",{ required:true})}
+              {...register("lName",{ required: {
+                value: true, 
+                message: "This field is required"
+                
+              }})}
             />
+            {errors.lName &&  <span className="text-xs text-red-600">{errors.lName.message}</span>}
           </div>
           <div className="flex flex-col gap-1">
             <label htmlFor="email">E-mail</label>
@@ -53,8 +77,13 @@ const ResetPassword = () => {
               id="password"
               className="border-2 border-blue-300 rounded"
               autoComplete="off"
-              {...register("password")}
+              {...register("password", {required: {
+                value: true,
+                message: "This field is required"
+              },
+             })}
             />
+            {errors.password && <p className="textxs text-red-300">{errors.password?.message}</p>}
           </div>
           <div className="flex flex-col gap-1">
             <label htmlFor="confirmPassword">Confirm Password</label>
@@ -62,7 +91,12 @@ const ResetPassword = () => {
               type="password"
               id="confirmPassword"
               className="border-2 border-blue-300 rounded"
-              {...register("confirmPassword")}
+              {...register("confirmPassword", {required: {
+                value: true,
+                message: "This field is required"
+              },
+              // watch === password
+            })}
             />
           </div>
           <div className="flex gap-1">
@@ -75,10 +109,10 @@ const ResetPassword = () => {
           </div>
         </div>
         <div className="flex justify-center gap-5">
-          <button type="submit" className="px-10 py-3 bg-green-400 rounded">
+          <button type="submit" className="px-10 py-3 bg-green-400 rounded hover:bg-green-500 hover:text-white trasition-all duration-300 ease-in ">
             Submit
           </button>
-          <button type="reset" className="px-10 py-3 bg-gray-400 rounded">
+          <button type="reset" className="px-10 py-3 bg-gray-400 rounded hover:bg-gray-500 hover:text-white trasition-all duration-300 ease-in">
             Cancel
           </button>
         </div>
