@@ -4,7 +4,7 @@ const ResetPassword = () => {
   const { register, handleSubmit, formState:{errors} } = useForm();
   
   console.log(errors)
-  const onsubmit = handleSubmit((data) => {
+  const onsubmit = handleSubmit(() => {
     // console.log(data);
   });
   return (
